@@ -1,0 +1,36 @@
+# Connect to Azure with the System Managed Identity
+
+ try
+ {
+    "Logging in to Azure..."
+    Connect-AzAccount -Identity
+}
+catch {
+    Write-Error -Message $_.Exception
+    throw $_.Exception
+}
+
+$Subname="xxx"
+Set-AzContext -Subscription $Subname
+
+# Variables
+# Set the tag for the VM's to start with the tag value
+# VM's with matching tag and value, in the specified scope will start
+$tag = "VM-Power"
+$tagValue = "YES"
+
+$VMs = Get-AzVm  |  Where-Object { $_.tags[$tag] -eq $tagValue } | Select Name, ResourceGroupName, Tags
+
+ForEach ($VM in $VMs)
+{
+     $VMStatus2 = Get-AzVM -Name $VM.Name -ResourceGroupName $VM.ResourceGroupName -Status | 
+    Select Name, ResourceGroupName, DisplayStatus, Tags
+    $VMN=$VM.Name
+    $VMRG=$VM.ResourceGroupName
+        If ($VMStatus2 = "VM Running") 
+            {
+                Start-AzVM -Name $VMN -ResourceGroupName $VMRG
+                "$VMN is Started"
+            }
+                   
+}
