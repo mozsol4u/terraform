@@ -1,0 +1,144 @@
+Overview:
+
+1) We need to create 2 merge startup scripts under appianadmin home directory name as below
+
+ - merge-start.sh (under this script file, we have to define the paths of appian startup script commands)
+ - merge-stop.sh (under this script file, we have to define the paths of appian stop script commands)
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+1st Step
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+vi /home/application/merge-start.sh
+
+#!/bin/bash
+
+# Change to the directory where the first custom script is located
+cd /home/application/data/apa
+
+# Run the command that requires elevated privileges to execute the first custom script
+sudo ./start.sh -p Welcome
+
+# Sleep for 2 minutes (120 seconds)
+sleep 120
+
+# Change to the directory where the second custom script is located
+cd /home/application
+
+# Run the command that requires elevated privileges to execute the second custom script
+sudo ./start2.sh
+
+# Sleep for 2 minutes (120 seconds)
+sleep 120
+
+# Change to the directory where the thrid custom script is located
+cd /home/application/data/bin
+
+# Run the command that requires elevated privileges to execute the third custom script
+sudo ./start3.sh
+
+# Sleep for 2 minutes (120 seconds)
+sleep 120
+
+# Change to the directory where the fourth custom script is located
+cd /home/application/data/bin
+
+# Run the command that requires elevated privileges to execute the fourth custom script
+sudo ./start4.sh
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2nd Step
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+vi /home/application/merge-stop.sh
+
+#!/bin/bash
+
+# Change to the directory where the first custom script is located
+cd /home/application/data/apa
+
+# Run the command that requires elevated privileges to execute the first custom script
+sudo ./stop.sh
+
+# Sleep for 2 minutes (120 seconds)
+sleep 120
+
+# Change to the directory where the second custom script is located
+cd /home/application
+
+# Run the command that requires elevated privileges to execute the second custom script
+sudo ./stop2.sh
+
+# Sleep for 2 minutes (120 seconds)
+sleep 120
+
+# Change to the directory where the thrid custom script is located
+cd /home/application/data/bin
+
+# Run the command that requires elevated privileges to execute the third custom script
+sudo ./stop3.sh
+
+# Sleep for 2 minutes (120 seconds)
+sleep 120
+
+# Change to the directory where the fourth custom script is located
+cd /home/application/data/bin
+
+# Run the command that requires elevated privileges to execute the fourth custom script
+sudo ./stop4.sh
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+3rd Step
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Run the below command for executable permission 
+chmod +x merge-start.sh
+chmod +x merge-stop.sh
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+4th Step - start the main script by manual method
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Run both scripts manually before creating a cronjob
+
+# cd /home/applicatition
+# ./merge-start.sh
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+5th Step - Check the Application launching page - If successful
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+6th Step - stop the main script by manual method
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# cd /home/applicatition
+# ./merge-stop.sh
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+7th Step - Check the Application launching page - shouldn't be accessible
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+8th Step - If the manual start/stop scripts successful - create cronjob
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+To configure the cronjob follow the below steps
+
+#crontab -u application -e
+
+25 08 * * 1-5 /home/wasadm/merge-start.sh
+45 08 * * 1-5 /home/wasadm/merge-stop.sh
+
+To check if the crontab has configured under application user profile
+
+#crontab -u application -l
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+9th Step - If everything works perfectly - then we need to enable Automation Runbook configuration for Server (Start/Stop)
+using cronjob dependency 
+
+
