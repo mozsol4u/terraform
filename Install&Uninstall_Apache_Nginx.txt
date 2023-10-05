@@ -1,0 +1,34 @@
+Install Apache
+sudo dnf update
+sudo dnf install httpd
+sudo systemctl start httpd
+sudo systemctl enable httpd
+sudo systemctl status httpd
+
+
+Remove Apache
+sudo dnf remove httpd
+
+sudo rm -rf /etc/httpd
+
+
+Install Nginx
+
+sudo dnf update
+sudo dnf install nginx
+sudo systemctl start nginx
+sudo systemctl enable nginx
+sudo systemctl status nginx
+
+Remove Nginx
+sudo dnf remove nginx
+sudo rm -rf /etc/nginx
+
+Install mysql 
+sudo dnf install https://dev.mysql.com/get/mysql80-community-release-el8-1.noarch.rpm
+
+
+
+To set date/time as Eastern
+sudo timedatectl set-timezone America/Toronto
+

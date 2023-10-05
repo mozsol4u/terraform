@@ -1,0 +1,8 @@
+crontab -u wasadm -e
+# This job will run every day at 7:30 pm
+
+30 19 * * 1-5 /home/wasadm/services-start.sh
+40 19 * * 1-5 /home/wasadm/services-stop.sh
+
+chmod +x services-start.sh
+chmod +x services-stop.sh
