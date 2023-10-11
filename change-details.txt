@@ -1,0 +1,69 @@
+We have to apply monthly Microsoft and Linux OS patches to OCI (Oracle Cloud Infrastructure) environment in order to ensure server security and compliance with vendor recommendations and it is essential that we regularly apply Microsoft and Linux OS monthly patches to environment to safeguard the servers and ensuring they remain secure and free from vulnerabilities.
+
+Also, Patching is a mandatory requirement to maintain PCI compliance certification.
+
+Please make a note that these servers are newly built and have recently been migrated from our on-premises data center to OCI enviornment.
+
+At the moment, the patching process for these servers in OCI is not in place. These servers were previously onboarded last month to our Celero Azure tenant using Azure Arc functionality.
+
+Note:
+
+1) We have divided the patching process into two phases. The first phase will focus on QA (Quality Assurance) and NPD (Non-Production) servers. Once this phase is successfully completed, the second phase will commence the following week, targeting the Production servers.
+
+2) Please note that as part of the patching process, servers may require a reboot. We have scheduled this preventive maintenance window during non-business hours to minimize any disruption to our normal operations.
+
+3) We will communicate to respective SME's once the patching completes to ensure they validate the busiess applications are working as expected.
+
+Monthly server patching is essential for several reasons:
+
+- Security
+- Compliance
+- Stability
+- Vendor Recommendations
+- Preventive Maintenance
+
+Notes:
+The completion results of Phase1 will decide the phase2 execution, we will initiate a separate change request for Phase 2.
+
+Steps:
+
+1) Login to Azure portal https://portal.azure.com 
+2) Assign the patching wave tags to (QA/NPD) servers under Azure Arc
+3) Home -> Automation Account -> Subscription= SUB-ENT-SharedHub-PRD
+4) Update management -> Schedule update deployment -> Schedule the 2 jobs (Windows/Linux) as per attached spreadsheet maintenance window
+
+Our goal is to proactively manage the risks and minimize any adverse impacts during the patching process
+- Identify and quantify the potential risks associated with the patching process.
+- Evaluate the impact on system availability, performance, and operations.
+- Ensure a well-informed and structured approach to patching to maintain system stability and security.
+
+In the event of any issues arising from the patching process, we have a procedure in place to uninstall patches. Here are the steps for both Windows and Oracle Linux 8.
+
+For Windows:
+
+1) Login to the Windows server through Oci jumpbox
+2) Go to 'Control Panel.'
+3) Open 'Programs and Features' or 'Add/Remove Programs'
+4) Find the installed update or patch KB number wish to uninstall
+5) Select it and choose the 'Uninstall' option
+6) Follow the on-screen instructions to complete the uninstallation
+7) Reboot the server
+8) Check the Application functionality
+
+For Oracle Linux 8:
+
+1) Login to the server using putty through Oci jumpbox
+2) Open a terminal as the root or a user with sudo privileges.
+3) List the installed packages and find the specific package associated with the patch
+   command= yum list installed
+4) Uninstall the package (patch)
+   command= yum remove [package-name]
+5) Reboot the server
+   command= sudo reboot
+6) Check the Application functionality 
+
+1) Once the job completed, Login to the Azure portal (https://portal.azure.com) 
+2) Make sure all the QA/NPD servers status changed from non-compliant to compliant (with greencheck mark)
+
+
+
