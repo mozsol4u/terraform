@@ -1,0 +1,34 @@
+# Add the following line to ~/.bashrc or ~/.bash_profile
+export MY_APP_PASSWORD=welcome123
+
+# /home/john/start.sh
+# Use the password from the environment variable
+PASSWORD="$MY_APP_PASSWORD"
+
+# Rest of your script
+
+#!/bin/bash
+
+# Log in to Azure (if not already logged in)
+az login
+
+# Retrieve the secret from Azure Key Vault
+secret_value=$(az keyvault secret show --name your-secret-name --vault-name your-keyvault-name --query 'value' --output tsv)
+
+# Use the secret in your custom script
+echo "Password: $secret_value"
+
+# Your custom script logic here
+
+++++++++++++++++++++++++++++++++++++++++++++++++
+vi password.ini
+
+[MyApp]
+database_password = your_password_here
+
+
+# Read the password from the INI file
+password=$(awk -F= '/^database_password/ {print $2}' passwords.ini)
+
+# Use the password in your script
+echo "Password: $password"
