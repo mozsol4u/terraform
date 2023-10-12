@@ -1,0 +1,5 @@
+Heartbeat
+| where TimeGenerated >= ago(30d)
+| summarize AggregatedAvailability = count() * 100 / 30d by bin(TimeGenerated, 1d), tostring(_ResourceId)
+| project TimeGenerated, VMResourceId = tostring(_ResourceId), AggregatedAvailability
+| order by TimeGenerated asc
