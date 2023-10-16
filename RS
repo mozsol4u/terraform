@@ -1,0 +1,25 @@
+RHEL Servers Patching – Overview 
+
+Monthly patching and regular maintenance of RHEL servers using Red Hat Satellite Server is essential in keeping the Linux server infrastructure healthy, up to date and optimized. Red Hat Satellite Server provides a centralized management platform for software updates, patching, and system configuration management. Regular maintenance ensures the stability, security, and optimal performance of Satellite Server in managing the RHEL servers in the environment.
+
+The following is a step-by-step guide which is used by the XYZ CCOE Team during RHEL patching:
+
+Review patch releases: Stay informed about the latest patches and updates released by Red Hat. Regularly review the Red Hat Customer Portal, errata advisories, and security bulletins to understand the significance of patches and their potential impact on your RHEL server environment. Consider factors such as security vulnerabilities, bug fixes, and performance improvements when evaluating the need for patching.
+
+Create a patching and maintenance schedule: Establish a specific date and time each month for performing patching and maintenance activities. Choose a time when server usage is low to minimize user disruption and application downtime. Communicate the schedule to relevant stakeholders, ensuring everyone is prepared for the planned maintenance window.
+
+Plan for testing and staging: Before applying patches to production servers, set up a testing and staging environment using Satellite Server. This environment should closely resemble the production environment, thus allowing you to validate the patches' compatibility and ensure the stability of applications and services post-patching. Test all patches on a subset of non-production servers to identify any issues or conflicts before deploying them to production.
+
+Create custom software channels: In Satellite Server, create custom software channels that align with patching requirements. Organize patches based on stability, criticality, or server groups. By creating custom channels, one can have control over the patches applied to specific server groups, ensuring that the correct updates are deployed based on an environment's unique needs.
+
+Schedule patch deployments: Configure patch deployment schedules in Satellite Server. Define the specific servers or server groups that should receive patches and assign the appropriate software channels. Schedule deployments during the maintenance window to minimize service disruptions amongst users.
+
+Monitor patching progress: Monitor the patch deployment progress using the reporting and monitoring capabilities of Satellite Server. Track the status of patch installations, verify successful deployments, and identify any failed or pending updates. Regularly review compliance reports to ensure all targeted servers are up to date and compliant with the desired patch levels.
+
+Perform post-patching validation: After patch deployments, perform post-patching validation to ensure that RHEL servers are functioning correctly. Test critical Business applications and services to verify their functionality and validate that the server configurations have not been adversely affected. If any issues are identified, troubleshoot and correct them promptly.
+
+Document patching activities: Maintain detailed documentation of the patching activities performed on each RHEL server. Record the patches installed, dates of installation, any issues encountered, and their resolutions. This documentation serves as a reference for audits, troubleshooting, and tracking the overall patch management process.
+
+Stay informed and apply updates: Continuously monitor the Red Hat Customer Portal for any new patches, errata advisories, and security bulletins. Stay up to date with the latest releases, vulnerabilities, and recommended updates for your RHEL servers. Regularly apply relevant patches and updates using Satellite Server to ensure the security and stability of your server environment.
+
+Perform regular Satellite Server maintenance: Regularly maintain and update the Satellite Server on a frequent basis to keep the Satellite Server software up to date. This is done by applying patches and updates which are provided by Red Hat. 
