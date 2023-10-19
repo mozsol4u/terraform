@@ -1,0 +1,10 @@
+Based on the recent security OS patches that were deployed in the OCI QA and NPD environments, no issues were found in terms of server availability and application functionality. 
+The Infra team received positive feedback from the Application SMEs, and they have agreed to proceed with the same patches in the production environment on October 29th. However, due to the ongoing Caisse change freeze until the middle of next week, the team has decided to schedule the deployment of these patches for production on Sunday, October 29th. 
+During the deployment all App SMEs will be on standby to support pre/post tasks.
+
+We have a total of 58 CB servers in the production environment. To account for application dependencies, we have agreed to split the work into two separate jobs. 
+The first job is scheduled to run in the morning from 1 am to 5 am MDT and will include Apps/DB servers. 
+On the same day, the second job will run in the evening and will exclusively cover batch servers.
+Please take note that this is the first time we are applying patches in the production environment since we migrated these servers from on-premises to OCI.
+
+Additionally, please take note that this is not the final patch schedule for the production environment. We anticipate the need to align with the App SMEs in November to discuss the scheduler. During our recent meeting with the App SMEs, on 19th October, we learned that an update for the DNA application is expected to be released between November 5th and November 19th. With these dates in mind, we may need to adjust the OS patch deployment to minimize potential business impact
