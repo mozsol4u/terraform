@@ -1,0 +1,87 @@
+-- Restore Encrypted Database on another Server
+-- ON Source DB server run the below queries until Step 4
+-- ON Target DB server run the below queries from Step 5 
+
+-- Step 1
+-- To check if any databases are encrypted
+
+SELECT
+db.name,
+db.is_encrypted,
+dm.encryption_state,
+dm.percent_complete,
+dm.key_algorithm,
+dm.key_length,
+db.database_id
+FROM
+sys.databases db
+LEFT OUTER JOIN sys.dm_database_encryption_keys dm
+ON db.database_id = dm.database_id;
+GO
+
+-- Step 2
+-- Take a Full Backup to move on to another server
+
+-- Step 3
+-- Check the Certificates on Master DB
+
+SELECT * FROM sys.certificates;
+
+-- Step 4
+-- Backup the Certificate with Encryption key, this to be run on Master DB
+
+BACKUP CERTIFICATE MyServerCert
+TO FILE = 'C:\Temp\SQLBackup\TDE_Cert'
+WITH PRIVATE KEY (file='C:\Temp\SQLBackup\TDE_CertKey.pvk',
+ENCRYPTION BY PASSWORD='mycertificatepassword@1234')
+
+-- Step 5
+-- Copy the relevant 3 Backup files (Backup file, Certificate file, PrivateKey file)
+
+
+-- Step 6
+-- Try to Restore it will be failed due to unable to find the certificate 
+
+-- Step 7
+-- Create Master key on the Target server
+
+USE master;
+GO
+CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'dontaskmeagain@1234';
+GO
+
+-- Step 8
+-- Create a Certificate from the Source Server Backup
+USE master;
+GO
+CREATE CERTIFICATE BackupEncryptionCert
+FROM FILE = 'C:\Temp\SQLBackup\TDE_Cert'
+WITH PRIVATE KEY (FILE = N'C:\Temp\SQLBackup\TDE_CertKey.pvk', DECRYPTION BY PASSWORD = 'mycertificatepassword@1234');
+GO
+
+
+-- Step 9
+-- Try to Restore the DB from the Source Server Backup file & End result should be successful
+
+-- Step 10
+-- To check if any databases are encrypted & end result should be 3 for encryption
+
+SELECT
+db.name,
+db.is_encrypted,
+dm.encryption_state,
+dm.percent_complete,
+dm.key_algorithm,
+dm.key_length,
+db.database_id
+FROM
+sys.databases db
+LEFT OUTER JOIN sys.dm_database_encryption_keys dm
+ON db.database_id = dm.database_id;
+GO
+
+
+
+
+
+

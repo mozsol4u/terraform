@@ -1,0 +1,11 @@
+SQL DB TDE Enabled Restore on Another server High-level Steps:
+
+1) Login to Source Server, Backup the Database and Move to Another Server
+2) Backup the Certificate along with Private key which is encrypted the Database
+3) Copy all 3 files From Source Server to the Target Destination server
+File names (Certificate file, Certificate file, Private key file)
+4) Login to Target paste the 3 files in somewhere, Eg: C:\Temp\SQLBackup\
+5) Create a Master key with Encryption password
+6) Create a Certificate from the Backup File
+7) Restore the Database
+8) Verify to makesure the Database is Encrypted

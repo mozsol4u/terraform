@@ -1,0 +1,16 @@
+SQL DB TDE Enabled High-level Steps: 
+
+1) Create a Master Key
+2) Create or obtain a certificate protected by the Master Key
+3) Create a Database Encryption Key and protect it by using the certificate
+4) Set the Database to use Encryption
+
+Reference URLs:
+https://learn.microsoft.com/en-us/sql/relational-databases/security/encryption/transparent-data-encryption?view=sql-server-ver15
+https://learn.microsoft.com/en-us/sql/relational-databases/system-dynamic-management-views/sys-dm-database-encryption-keys-transact-sql?view=sql-server-ver15
+
+Part 1 Encrypt SQL Database - Transparent data encryption (TDE)
+https://www.youtube.com/watch?v=PU1urMaFoew
+
+Part 2 of the Video: Restore Encrypted Database on another Server
+https://www.youtube.com/watch?v=9s6mAlbe4qA

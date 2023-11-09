@@ -1,0 +1,97 @@
+-- Step 1
+-- To check if any databases are encrypted
+
+SELECT
+db.name,
+db.is_encrypted,
+dm.encryption_state,
+dm.percent_complete,
+dm.key_algorithm,
+dm.key_length,
+db.database_id
+FROM
+sys.databases db
+LEFT OUTER JOIN sys.dm_database_encryption_keys dm
+ON db.database_id = dm.database_id;
+GO
+
+-- Step 2
+-- Creating the Master Key
+
+USE master;
+GO
+CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'dontaskmeagain@1234'
+GO
+
+-- Step 3
+-- Creating the Certificate
+
+CREATE CERTIFICATE MyServerCert WITH SUBJECT = 'My DEK Certificate';
+GO
+
+-- Step 4
+-- To check if Master Keys exsits 
+
+Select * FROM sys.symmetric_keys;
+
+-- Step 5
+-- To check if Certificate has been created
+
+SELECT * FROM sys.certificates;
+
+-- Step 6
+-- Creating a Encryption key and protect with using the certificate
+
+USE dba
+GO
+CREATE DATABASE ENCRYPTION KEY
+WITH ALGORITHM = AES_256
+ENCRYPTION BY SERVER CERTIFICATE MyServerCert;
+GO
+
+-- Step 7
+-- Verify if Encryption is enabled or not
+
+SELECT
+db.name,
+db.is_encrypted,
+dm.encryption_state,
+dm.percent_complete,
+dm.key_algorithm,
+dm.key_length,
+db.database_id
+FROM
+sys.databases db
+LEFT OUTER JOIN sys.dm_database_encryption_keys dm
+ON db.database_id = dm.database_id;
+GO
+
+-- Still it shows uncrypted with value=1, another step is needed as below
+-- First take a log backup and then enabled Encryption on otherwise it will send an error
+
+-- Step 8
+-- Enabling Encryption ON
+
+ALTER DATABASE dba
+SET ENCRYPTION ON;
+GO
+
+-- Step 9
+-- Verify if Encryption is enabled or not
+
+SELECT
+db.name,
+db.is_encrypted,
+dm.encryption_state,
+dm.percent_complete,
+dm.key_algorithm,
+dm.key_length,
+db.database_id
+FROM
+sys.databases db
+LEFT OUTER JOIN sys.dm_database_encryption_keys dm
+ON db.database_id = dm.database_id;
+GO
+
+
+
