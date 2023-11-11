@@ -1,0 +1,81 @@
+Restore DB from Non Encrypted server to Encrypted server
+
+1. Offline the current running encrypted DB
+2. Delete the encrypted DB
+3. Restore the Non encrypted DB
+-- Verify if Encryption is enabled or not
+
+SELECT
+db.name,
+db.is_encrypted,
+dm.encryption_state,
+dm.percent_complete,
+dm.key_algorithm,
+dm.key_length,
+db.database_id
+FROM
+sys.databases db
+LEFT OUTER JOIN sys.dm_database_encryption_keys dm
+ON db.database_id = dm.database_id;
+GO
+
+** The newly restore DB is not encrypted at this step
+
+4. To validate the certificate name
+-- To check if Certificate has been created
+SELECT * FROM sys.certificates;
+
+5. Make a note of the Certificate name which is installed on the server
+
+-- Creating a Encryption key and protect with using the certificate
+USE dba
+GO
+CREATE DATABASE ENCRYPTION KEY
+WITH ALGORITHM = AES_256
+ENCRYPTION BY SERVER CERTIFICATE MyServerCert;
+GO
+
+** Warning: The certificate used for encrypting the database encryption key has not been backed up. You should immediately back up the certificate and the private key associated with the certificate. If the certificate ever becomes unavailable or if you must restore or attach the database on another server, you must have backups of both the certificate and the private key or you will not be able to open the database.
+
+6. Verify if Encryption is enabled or not
+
+SELECT
+db.name,
+db.is_encrypted,
+dm.encryption_state,
+dm.percent_complete,
+dm.key_algorithm,
+dm.key_length,
+db.database_id
+FROM
+sys.databases db
+LEFT OUTER JOIN sys.dm_database_encryption_keys dm
+ON db.database_id = dm.database_id;
+GO
+
+-- Still it will shows uncrypted with value=1, another step is needed as below
+
+7. Enable Encryption on newly restore Database
+
+-- Enabling Encryption ON
+
+ALTER DATABASE dba
+SET ENCRYPTION ON;
+GO
+
+
+8. Verify if Encryption is enabled or not
+
+SELECT
+db.name,
+db.is_encrypted,
+dm.encryption_state,
+dm.percent_complete,
+dm.key_algorithm,
+dm.key_length,
+db.database_id
+FROM
+sys.databases db
+LEFT OUTER JOIN sys.dm_database_encryption_keys dm
+ON db.database_id = dm.database_id;
+GO
