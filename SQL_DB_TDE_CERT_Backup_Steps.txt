@@ -1,0 +1,6 @@
+USE MASTER
+GO
+BACKUP CERTIFICATE MyServerCert TO FILE='C:\Temp\SQLBackup\TDECERT.cer'
+WITH PRIVATE KEY (file='C:\Temp\SQLBackup\TDE_Certkey.pvk',
+ENCRYPTION BY PASSWORD='dontaskmeagain@1234')
+
