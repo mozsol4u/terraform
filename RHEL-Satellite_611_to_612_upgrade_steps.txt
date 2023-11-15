@@ -1,0 +1,26 @@
+Login to Satellite server
+
+# subscription-manager repos --enable satellite-maintenance-6.12-for-rhel-8-x86_64-rpms
+# satellite-maintain upgrade list-versions (This will show both 6.11 and 6.12) - If doesn't show the latest update we need to clean the repo
+# yum repolist
+# yum clean all
+# satellite-maintain upgrade list-versions (If still not list might be a bug, we need to enable another repo)
+# subscription-manager repos --enable satellite-6.12-for-rhel-8-x86_64-rpms (this time it deducts)
+# satellite-maintain upgrade list-versions (it will show the available updates)
+# satellite-maintain upgrade check --target-version 6.12 (To makesure everything is in good condition, all clean green here, if it fails for /etc/yum.conf )
+# vi /etc/yum.conf
+comment on line 7, where it says (exclude=python2-leapp,snactor,leapp-upgrade-el7toel8,leapp) and save the file
+# satellite-maintain upgrade check --target-version 6.12 (it will display a warning message on leapp package, we can ignore at this time)
+# satellite-maintain upgrade run --target-version 6.12 (the upgrade was successful, now we need to validate the new kernel)
+# rpm --query --last kernel | head -n l
+# uname --kernel-release
+# hammer ping (it will show the relevant services status=ok, that means everything is running as expected without any issues)
+
+Now we need to login to GUI console
+
+Loing with the username & password
+
+Hosts -> to make sure it shows the Satellite server OS version
+Monitor -> Dashboards 
+Content -> Sync status -> Expand All 
+Administer -> About (here it will show the version number as 6.12)
