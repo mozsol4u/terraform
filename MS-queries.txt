@@ -1,0 +1,35 @@
+Heartbeat
+| join kind = inner hint.remote=left
+   (arg("").Resources
+   | where type =~ "Microsoft.HybridCompute/machines" or type  =~ 'Microsoft.Compute/virtualmachines'
+   | project _ResourceId=tolower(id), tags)
+   on _ResourceId
+| extend tag=parse_json(tostring(tags))
+| extend tag.patch_window
+| where tag.patch_window contains "ProdB-W1"
+| project  TimeGenerated, _ResourceId, tag_patch_window, Computer
+| summarize by Computer
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+Heartbeat
+| join kind = inner hint.remote=left
+    (arg("").Resources
+    | where type =~ 'Microsoft.HybridCompute/machines'
+    | project _ResourceId=tolower(id), tags)
+    on _ResourceId
+| project Computer, $tableCustomer = tostring(parse_json(tags)[" test"])
+
+Heartbeat
+| join kind = inner hint.remote=left
+    (arg("").Resources
+    | where type =~ 'Microsoft.HybridCompute/machines'
+    | project _ResourceId=tolower(id), tags)
+    on _ResourceId
+| project Computer, $tableCustomer = tostring(parse_json(tags)[" NonProdB-W2 "])
+
+NonProdB-W1 
+NonProdB-W2 
+ProdB-W1 
+ProdB-W2 
