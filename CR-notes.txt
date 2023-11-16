@@ -1,0 +1,93 @@
+As part of Celero monthly patching process for OCI, we need to apply the November patches in the QA/NPD environments for both Windows and Linux OS. Regular OS updates is essential to safeguard the servers, ensuring they remain secure and free from any vulnerabilities.
+
+In addition to the aforementioned benefits, it is important and crucial to underscore that patching for OCI enviornment is obligatory requirement for maintaining PCI compliance certification for us and to our external clients.
+
+Notes: 
+
+1) We have didvided the patching process for the month of November in 4 phases:
+
+a) The first and second phase will focus on QA (Quality Assuance) and NPD (Non-Production) servers. 
+The updates will be deployed on the following dates.
+
+DNA, MPI, DB servers = 18-11-2023 between 1am to 5am (MDT)
+Automic, Batch servers = 20-11-2023 between 4pm to 8pm (MDT) - A separate change will be initiated for this deployment.
+
+b) The third and fourth phases will primarily concentrate on production servers. To minimize the impact on end clients utilizing DNA and MPI services, these phases have been scheduled on two separate weekends. The updates will be deployed on November 26th and December 3rd. 
+
+Kindly make a note that upon reviewing the deployment results of the QA/NPD servers, we will proceed to initiate a separate change request for the production changes. 
+
+2) During the patching process, servers may require a reboot. We have scheduled this preventive maintenance window during non-business hours to minimize any disruption to our normal operations.
+
+3) Upon completion of the patching activity, Team Infra will promptly notify the respective SMEs to validate application functionalities.
+
+4) To obtain more information about the required patches for the servers, please refer to the attached zip file. Also, make a note that a few servers may not have discovered the newly released patches yet, as they were released on November 14th. As soon as these patches appear in the Automation Update Management console, we will add the corresponding servers to the zip file.
+
+Justification:
+
+Monthly server patching is essential for serveral reasons:
+- Security
+- Compliance
+- Stability 
+- Vendor Recommendations
+- Preventive maintenance
+- To maintain PCI compliance certification
+
+Implmentation plan:
+
+The completion results of Phase 1 and Phase 2 will determine the execution of Phase 3 and Phase 4.
+
+Steps: 
+
+1) Login to Azure portal https://portal.azure.com
+2) Home -> Automation Account -> Subscription=SUB-ENT-SharedHub-PRD
+3) Update management -> Schedule update deployment -> Schedule the seperate jobs (Windows/Linux) 
+
+Risk and impact analysis
+
+Our goal is to proactively manage the risks and minimize any adverse impacts during the patching process.
+- Identify and quantify the potential risks associated with the patching process
+- Evaluate the impact on system availablity, performance, and operations
+- Ensure a well-informed and structured approach for patching to maintain system stablity and security
+
+Backout Plan:
+
+In the event of any issues arising from the patching process, we have a procedure in place to uninstall patches. Here are the steps for both Windows and Linux systems.
+
+For Windows
+
+1) Login to the Windows server through OCI jumpbox
+2) Go to 'Control Panel' 
+3) Open 'Program and Features' or 'Add/Remove Programs'
+4) Find the installed update or patch KB number wish to uninstall
+5) Select it and choose the 'Uninstall' option
+6) Follow the on-screen instructions to complete the installation
+7) Reboot the server
+8) Check the Application functionality
+
+For Linux
+
+1) Login to the server using putty through OCI jumpbox
+2) Open a terminal as the root or user with sudo priviledges
+3) ist the installed packages and find the specific package associated with the patch
+4) Uninstall the package (patch)
+command= yum remove [package-name]
+5) Reboot the server
+command= sudo reboot
+6) Check the Application functionality
+
+Testing details:
+Successful testing has been completed for the OCI Sandbox server. To know more about the details please refer to the attached excel spreadsheet.
+
+Implementation Validation plan:
+
+1) Once the job completed, Login to the Azure portal https://portal.azure.com 
+2) Navigate to Automation Account
+Home -> Automation Account -> Subscription=SUB-ENT-SharedHub-PRD -> Update management
+Make sure all the QA/NPD servers status changed from Non-compliant to compliant (with gree check mark)
+
+Reason for not attaching communication
+
+Client communication is not required for this change, as the enviornment belongs to Celero and fully managed by Celero resources and also the OCI subject matter experts are fully aware of this change and Insync with Intrastrcutre team.
+
+
+ 
