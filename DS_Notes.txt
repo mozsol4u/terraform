@@ -1,0 +1,98 @@
+Incidents:
+
+In the recent patching cycles in the Dev environment, the team encountered couple of incidents related to Windows server patching. The patches failed, leading to an unhealthy system state. Consequently, the team has to restore the entire virtual machine from the last successful backup, which was taken before the scheduled patching.
+
+The Azure Virtual Machine snapshot backup overwrite process typically requires approximately 15 to 30 minutes, the duration varying based on the size of the Azure Virtual Machine and the data stored on the disks.
+
+Note: The restoration timeframe for Cohesity backups is also similar too Azure virtual machine restoration process.
+
+
+Patching best practices :
+
+1) Ensure that the target server has the most recent and complete backup before initiating the patching process.
+
+2) Backups and restorations can be achieved using one of the methods
+
+a) Azure VM snapshot backup occurs daily at 3 AM with a retention period of 7 days
+b) Cohesity VM snapshot backup occurs daily at 3 AM with a retention period of 7 days
+
+Backup retention period of the enviornments:
+Sandbox & DEV = 7 days (non-prod data)
+UAT & Prod = 12 months + 7 years (Prod data)
+
+
+Recovery Point Objective (RPO):
+
+Definition: RPO is the maximum tolerable period in which data might be lost from an IT service due to a major incident. In other words, it defines the point in time to which you must recover data in order to avoid significant harm to the business.
+
+Focus: RPO is concerned with data loss. It indicates the acceptable amount of data that an organization is willing to lose during a disruption, measured in time units (e.g., hours, minutes).
+Example: If the RPO is 4 hours, it means that in the event of a system failure, we have to afford to lose up to 4 hours worth of data.
+
+Recovery Time Objective (RTO):
+
+Definition: RTO is the maximum amount of time that a system or service can be down after a failure or disruption before the consequences become unacceptable. It represents the time it takes to restore and recover a system to its full functionality.
+
+Focus: RTO is concerned with the downtime of a system. It measures the time it takes to recover and restore the IT service to a fully operational state.
+
+Example: If the RTO is 2 hours, it means that we have a maximum of 2 hours to get our system back up and running after a failure before it starts negatively impacting the business operations.
+
+
+3) Azure VM disk snapshots can be triggered 10-15 minutes before the patching window by utilizing the Azure Automation Runbook scheduler with a PowerShell script.
+
+In the event of a failure, we should rely on one of the backup applications. 
+
+Being considering the RPO and RTO SLAs in mind, the quickest and least data loss option would be to utilize Azure Disks snapshots rather than Azure Virtual Machine snapshots or Cohesity restore procedures.
+
+Presently, Azure Disks snapshots are not configured in the environment. We can establish the implementation according to the following below approach
+
+a) Create a single, centralized runbook for all subscriptions or separate runbooks to each subscription
+
+b) We can use of a Managed Identity Automation account specifically designed for VM startup and shutdown procedures
+
+c) The following permissions to assign on each subscription level for the Automation Account, if it is set to contributor level then this step is not needed.
+
+i) Disk Snapshot Contributor
+ii) Reader 
+
+c) Assign the appropriate Tag Name and Tag Value to the servers 
+Example: (Tag Name = Snapshot, Tag Value = YES)
+
+d) Login to the Test VM in the Sandbox enviornment, create some new files and modify some data in the temp folder or SQL tables etc;
+
+e) Create a Runbook and Schedule the job and target the Test VM in the Sandbox enviornment
+
+f) Verify the data and attempt to swap the OS and Data Disks on the Test Machine using the recently created Snapshot Disks 
+
+g) If data validation is accurate and correct, proceed to delete the snapshots. 
+
+Notes: 
+
+- An advantage in the Disk snapshot scenario is that we retain both the original OS+Data disk at the time of VM creation and the new disk generated from the disk snapshot
+
+- Retaining snapshot disks in the environment results in increased monthly billing. Therefore, immediately after the completion of the patching maintenance window, and if there are no issues within one day, we have to delete the snapshots.
+
+
+4) How to Swap the Snapshot disks in the event of failures:
+
+a) Shutdown the server
+b) Make a note of the current disk information (Example: Disk name, size, type of disk etc)
+c) Create a new disk from the snapshot
+d) Assign a disk name
+e) Once the disk created
+f) Navigate to Server
+g) Click on Disks
+h) For OS click SWAP OS disk, with the new disk
+i) confirm the server name
+j) Click OK
+k) For Additional Disk, click on Deattach 
+l) Click on Attach exsiting disks
+m) Power ON the server and login on it
+n) Verify the Data
+
+
+
+
+
+
+
+
