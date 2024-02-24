@@ -1,0 +1,48 @@
+Increase the size of the OS disk (RHEL 8.6)
+
+Reference URL: https://learn.microsoft.com/en-us/azure/virtual-machines/linux/expand-disks?tabs=rhellvm
+
+Commands:
+
+# df -Th
+# lsblk
+# lsblk -f
+# vgdisplay rootvg
+
+To check growpart utility installed or not, most of the Market place RHEL images contain growpart utility installed
+# rpm -qa | grep -I growpart
+
+To make sure it is up to date
+# yum install cloud-utils-growpart gdisk
+
+# pvscan
+# poweroff
+
+Change the disk size from Home -> Disk -> Navigate to the disk  Size & Performance
+
+# df -Th
+# lsblk
+# lsblk -f
+# vgdisplay rootvg
+# pvscan
+# lsblk /dev/sda2
+# growpart /dev/sda2
+# lsblk /dev/sda2
+# pvresize /dev/sda2
+# pvscan
+# lsblk /dev/sda2
+
+In this scenario Adding /var 10GB, current size of /var= 8GB, after adding the additional space 
+Total /var=18GB
+
+# lvresize -r -L +10G /dev/mapper/rootvg-varlv
+# df -Th
+# pvscan
+
+
+
+
+
+
+
+
