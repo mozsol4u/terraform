@@ -1,0 +1,54 @@
+try
+{
+    "Logging in to Azure..."
+	Connect-AzAccount -Identity
+}
+catch {
+    Write-Error -Message $_.Exception
+    throw $_.Exception
+}
+ 
+#define the age of the snapshot you want to delete 
+$days = 1
+$timeline = (Get-Date).AddDays($days)
+ 
+$Subnames=@("NPD", "PRD","s-PRD")
+foreach($subname in $Subnames){
+Set-AzContext -Subscription $Subname
+# Get VMs with snapshot tag
+$tagResList = Get-AzResource -TagName "client" -TagValue "XYZ" | ForEach-Object {
+    Get-AzResource -ResourceId $_.ResourceId
+}
+foreach ($tagRes in $tagResList) {
+    if ($tagRes.ResourceId -match "Microsoft.Compute") {
+        $vmInfo = Get-AzVM -ResourceGroupName $($tagRes.ResourceId.Split('/')[4]) -Name $($tagRes.ResourceId.Split('/')[8])
+        $resourceGroupName = $vmInfo.ResourceGroupName
+        # delete the Snapshot OS  disk
+		$OSspName = $vmInfo.name+'*'
+        $OSsp = Get-AzSnapshot   -ResourceGroupName $resourceGroupName -SnapshotName $OSspName
+		if ($OSsp.TimeCreated -lt $timeline) {
+		$OSsp|Remove-AzSnapshot  -Force 
+		}
+ 
+        if ($vmInfo.StorageProfile.DataDisks.Count -ge 1) {
+            # Condition with more than one data disks
+            for ($i = 0; $i -lt $vmInfo.StorageProfile.DataDisks.Count; $i++) {
+                # Snapshot name of data disk
+                $diskSnapshotName = $vmInfo.StorageProfile.DataDisks[$i].Name + "*"
+				#delete data disk snapshot
+				$DiskSP = Get-AzSnapshot   -ResourceGroupName $resourceGroupName -SnapshotName $diskSnapshotName
+				if ($DiskSP.TimeCreated -lt $timeline){
+				$DiskSP | Remove-AzSnapshot  -Force 
+				}
+            }
+        } else {
+            Write-Host $vmInfo.Name + " doesn't have any additional data disk."
+        }
+    } else {
+        Write-Host $tagRes.ResourceId + " is not a compute instance"
+    }
+}
+}
+
+
+ 
