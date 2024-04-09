@@ -1,0 +1,69 @@
+Prep work tasks:
+
+1) DNS Updates 
+
+- Create the following records on Webin portal (External)
+  A record= MEDS.xyz
+  SPF=MEDS
+
+ - Create the following records on Azure portal (Internal)
+  A record= MEDS.xyz
+  SPF=MEDS
+
+- Open https://mxtoolbox.com/ check the following lookups (DNS,AAAA,SPF)
+
+- On-Prem AD (A record, SPF records) - If needed (to be check)
+
+2) Disassociate all resources from the current ABC.xyz domain, including computers, storage accounts
+
+Installation work tasks:
+
+1) Elevate the permissions to Global Administrator level
+
+2) Navigate to the Microsoft Entra Domain Services (MEDS), select the doamin name, and then click on the delete option 
+   This process may take between 10 to 30 minutes
+
+- After Deleting the current MEDS entries, verify and ensure that the following relevant DNS records no longer exist on both (External/Internal)
+  A record= ABC.xyz
+  SPF=ABC
+
+- Open https://mxtoolbox.com/ check the following lookups (DNS,AAAA,SPF)
+  We should receive an output indicating that no records exist 
+
+-  On-Prem AD DNS (A record, SPF records) - If needed (to be ceck)
+
+
+3) The new MEDS will be installed in the following location
+
+ Subscription= MYSUB
+ RG= MYAzureAD
+ DNS domain name= MEDS.xyz
+ SKU= Enterprise
+ vNET= MYVNET
+ SubNet= MYSNET
+ 
+ AzureActiveDirectory DC Administrators= MYAzureGroup
+ Alert Notifications= All Global Administrators of Entra ID directory & Memebers of the AzureActiveDomain DC Admin group
+
+ Type of Sync= Cloud only
+ Synchronization filter= MYAADGroup
+
+TLS 1.2 only mode= Enable
+NTLM v1 Authentication= Disable
+NTLM Password Synchronization= Enable
+Password Synchronization from On-Premises= Disable
+Kerberos RC4 Encryption= Disable
+Kerberos Armoring= Enable
+LDAP Signing= Enable
+LDAP Channel Binding= Enable
+
+This process may take between 45 to 60 minutes
+
+
+Post work tasks:
+
+1) Open https://mxtoolbox.com/ check the following lookups (DNS,AAAA,SPF)
+   We should receive an output indicating that record exist with public ip
+
+2) Refer to the project implementation tasks spreadsheet to proceed with the remaining work 
+
