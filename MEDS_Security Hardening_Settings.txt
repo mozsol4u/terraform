@@ -1,0 +1,31 @@
+TLS 1.2 Only Mode: By enabling this setting means communication between client systems and MEDS is encrypted using TLS 1.2 and mitigating the risk of vulnerablities assoiciated with with older TLs versions.
+
+Recommended= Enable
+
+NTLM v1 authentication: It is a older authentication protocol used in Windows environments, including MEDS for authenticating users and computers and has has several security weaknesses. The  option to disable the use of NTLMv1
+
+Recommended= Disable
+
+NTLM Password Synchronizaiton: It allows to synchronize user passwords from on-premises Active Directory environment to MEDS using the NTLM authentication protocol and it is considered less secure compared to modern authentication protocols like Kerberos. This can be consider to be disable and use the exsisting password hash synchronization
+
+Recommended= Disable
+
+Password Synchronization from On-premises: By enabling this feature organizations can provide a seamless sign-in experience for users across on-premises and cloud environments while maintaining a centralized identity management system. Additionally, this approach simplifies password management for users and administrators, as users can use the same password for both on-premises and cloud resources.
+
+Recommended= Disable (During installation, whether enabled or disabled, there will be no impact unless the AD federation is enabled to utilize password hash by the hosting company)
+
+Kerberos RC4 Encryption: It is a encryption algorithm used for Kerberos tickets in certain scenarios but due to weaknesses discovered in the RC4 algorithm and its usage has been deprecated in many security-sensitive contexts. Generally organizations enabling this feature to seamlessly integrate older systems or applications with MEDS without requiring significant modifications to their existing infrastructure.Recommendation to disabled this feature and use AES (Advanced Encryption System)
+
+Recommended= Disable
+
+Kerberos Armoring: It is a security feature in MEDS that enhances the security of Kerberos authentication by protecting the exchange of authentication tickets against certain types of attacks and it is typically enabled by default.
+
+Recommended= Enable
+
+LDAP Signing: The communication between clients and the managed domain service when LDAP signing is enabled to all LDAP simple bind and LDAP simple bind over SSL/TLS requests are required to be signed
+
+Recommended= Enable
+
+LDAP channel binding: It is a security feature to address the risk of LDAP (Lightweight Directory Access Protocol) man-in-the-middle attacks and designed to strengthen the security of LDAP communications between clients and servers.
+
+Recommended= Enable
