@@ -1,0 +1,37 @@
+- There will be no changes to the Runbook for Auto Start VMs (Pre-patching)
+- There will be no changes to the Runbook for VMs snapshot (Pre-patching)
+- There will be no changes to the Runbook for Disks snapshot deletions (Post pathcing)
+
+To start Azure Update manager (AUM2)
+
+1) Managed Identities:
+- One User Managed Identity per subscription 
+
+2) Azure Policy
+- Enable the Periodic checking for missing system updates on Azure virtual machines on Subscription level
+- OS type: Windows
+- Enable Remediation task using user managed identity
+The policy might take few hours to reflect
+
+3) Create Maintenance Task
+- Subscription (Common Hub Sub)
+- Add Schedule
+- Add a dynamic scope (Select the subscriptions DEV/UAT/PROD)
+- Select Filter and assign Tag values
+- Add resource group 
+- Select the classification update types 
+
+Decommisioning of Automation update management (AUM1)
+1) Uninstall Log Anaylytics agent from the VMs 
+2) Unlink the Log Analytics workspace
+3) Delete the Automation Account
+
+Azure Monitor
+
+Configure Windows virtual machines to run Azure Monitor Agent with user-assigned managed identity-based authentication (Virtual Machine Contributor)
+Configure Windows Machines to be associated with a Data Collection Rule or a Data Collection Endpoint (Monitoring Contributor, Log Analytics Contributor)
+
+
+
+
+
