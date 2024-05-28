@@ -1,0 +1,105 @@
+This document provides guidelines on the lifecycle management of virtual machines in Azure and OCI cloud platforms. It is divided into two main sections.
+
+ 
+1) Virtual Machine requirement
+2) Decommisioning of a virtual machine
+
+1) Virtual Machine:
+
+Creating an Azure virtual machine (VM) in a cloud using the ServiceNow ticketing system involves few high-level steps that integrate IT service management (ITSM) with cloud resource provisioning. Here’s a streamlined process:
+
+a) Service Request Submission
+
+User Request: A user submits a request for a new Azure VM through the ServiceNow portal. The request form includes necessary details such as VM size, region, operating system, and any specific configurations.
+Ticket Creation: ServiceNow generates a ticket for the VM request.
+
+
+b) Approval Workflow
+Manager Approval: The ticket is routed to the relevant manager or approver. They review the request for compliance with organizational policies and budget considerations.
+
+Approval/Rejection: The manager approves or rejects the request. If approved, the process moves forward.
+
+c) Automation Trigger
+Automation Initiation: Upon approval, the Cloud Ops team will triggers an automation workflow. This can be done using Azure DevOps using Infrastrcuture as code (IaC) release pipeline workflow to respective subscription
+
+d) VM Provisioning
+This process uses the Infrastructure as Code (Iac) Bicep template to deploy the following resources:
+
+- Resource Group Creation: If not already existing, a new resource group is created.
+- Network Configuration: Necessary network components (virtual network, subnet, and network security groups) are configured.
+- VM Deployment: The VM is created with the specified size, OS, and configuration.
+- Post-Deployment Configuration: Additional configurations like attaching disks, setting up monitoring, Azure Backup, Enabling ASR (if needed), Azure Arc Agent deployment for (OCI VMs) and 
+  applying security policies are completed
+
+e) Configuration Management
+CMDB Update: The Configuration Management Database (CMDB) in ServiceNow is updated with the new VM details, including resource ID, IP address, and other relevant metadata.
+
+Tagging: The VM and associated resources are tagged for cost management, ownership, and compliance purposes and respective SME details.
+
+f) Notification and Documentation
+User Notification: The requester is notified via ServiceNow once the VM is ready for use.
+
+Documentation: Detailed documentation of the VM, including access credentials and operational instructions, is provided to the user.
+
+g) Ongoing Management
+Monitoring and Alerts: The VM is monitored for performance and availability. Alerts and notifications are set up for any critical issues.
+Backup and Disaster recovery: Enable Azure Backup and ASR if needed
+
+Lifecycle Management: Periodic reviews are conducted to ensure the VM is still required and is being utilized efficiently.
+
+h) Ticket Closure
+Review and Close: The ticket is reviewed for completeness and then closed in the ServiceNow system once all tasks are confirmed to be completed successfully.
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+Decommisioning of Virtual machine
+
+Decommissioning an Azure/OCI virtual machine using the ServiceNow ticketing system involves few high-level steps to ensure a controlled, audited, and secure process. Here’s an outline of the process:
+
+a) Service Request Submission
+User Request: A user or IT administrator submits a request to decommission an Azure VM through the ServiceNow portal. The request form includes details such as the VM's name, resource group, and justification for decommissioning.
+
+Ticket Creation: ServiceNow generates a ticket for the decommissioning request.
+
+b) Approval Workflow
+Manager Approval: The ticket is routed to the relevant manager or approver. They review the request to ensure it aligns with organizational policies and that there are no dependencies on the VM.
+
+Approval/Rejection: The manager approves or rejects the request. If approved, the process moves forward.
+
+c) Pre-Decommissioning Checks
+Dependency Verification: The IT team verifies that there are no critical dependencies on the VM (e.g., applications, services, or other resources that rely on the VM).
+
+Data Backup: Ensure all necessary data is backed up from the VM if required. This may involve creating snapshots or exporting data to other storage solutions.
+
+Notification: Inform stakeholders of the impending decommissioning to avoid any disruption to business operations.
+
+d) Automation Trigger
+Automation Initiation: Upon approval and completion of pre-decommissioning checks, the Azure DevOps Infrastructure as Code (IaC) will triggers an pipeline workflow.
+
+e) VM Decommissioning
+IaC Execution: The Bicep template is executed to decommission the VM.
+VM Shutdown: The VM is shut down to ensure no data loss or corruption.
+Data Deletion: Delete all associated data if not needed or move it to long-term storage if required.
+Resource Deletion: The VM and all associated resources (disks, network interfaces, public IP addresses) are deleted from Azure.
+Post-Deletion Actions: Any additional cleanup tasks, such as updating DNS records or removing the VM from monitoring systems, Azure Backups are completed.
+
+f) Configuration Management
+CMDB Update: The Configuration Management Database (CMDB) in ServiceNow is updated to reflect the decommissioning of the VM. All records related to the VM are marked as decommissioned or archived.
+
+Tagging Update: Any tags related to the VM are updated to indicate its decommissioned status for cost management and audit purposes.
+
+g) Notification and Documentation
+User Notification: The requester and other relevant stakeholders are notified via ServiceNow once the VM has been successfully decommissioned.
+Documentation: Detailed documentation of the decommissioning process, including steps taken and any data backups, is recorded for future reference and compliance.
+
+h) Ongoing Management
+Resource Review: Periodic reviews are conducted to ensure that all decommissioned resources have been properly removed and that no residual costs are incurred.
+Audit and Compliance: Ensure that the decommissioning process complies with organizational policies and regulatory requirements. This may involve auditing logs and records of the decommissioning activities.
+
+i) Ticket Closure
+Review and Close: The ticket is reviewed for completeness, ensuring that all steps have been followed and that there are no outstanding issues. The ticket is then closed in the ServiceNow system.
+
+
