@@ -1,0 +1,91 @@
+To create Windows server 2012 R2 in Azure using Image 
+
+Pre-requsites
+a) Make sure the subscription is enabled with the following quotas
+   Standard D4s v3
+   Standard B2as v2
+
+Steps:
+
+1)  Create a Virtual Machine in Azure with HyperV support
+
+2)  Azure VM sizes that support nested virtualization include Dv3 and Ev3 series, in test lab created VM size Standard D4s v3 (4 vcpus, 16 GiB memory)
+
+3)  Install Windows Server 2016 Datacenter 
+
+4)  Login to the server
+
+5)  Server manager, Add Hyper-v Role
+
+6)  Download Windows 2012 R2 ISO (the media available on below link is evalution version 180 days)
+
+    Reference URL: 
+    https://www.microsoft.com/en-us/evalcenter/download-windows-server-2012-r2   
+
+7)  Open HyperV, create a virtual machine "Test01", Select Generation=1, Disk= Fixed, define the OS disk size=Example 40GB
+
+8)  Assign 2 processors, 8 GB memory
+
+9)  Assign administrator credentials
+
+10) Login to the HyperV hosted Windows server 2012R2
+
+11) Install Azure guest agent, validated OS essential services, makesure change the Windows Firewall settings (Allow Remote Desktop connection to Public, File & Print ICMP allow, Remote 
+    Desktop Allow connection and make sure NLA is deselected, reboot few times to ensure everything works as expected
+    
+    Reference URL:
+    https://github.com/Azure/WindowsVMAgent/releases
+
+12) Shutdown the HyperV hosted Windows server 2012R2
+
+14) Create Service principal with client seceret in Entra ID under App registration, This is temprorily for moving the VHD file into storage account, and ensure contributor permissions 
+    assign
+
+13) Download StarWind V2V converter utility
+
+    Reference URL: 
+    https://www.starwindsoftware.com/starwind-v2v-converter
+
+14) Follow the below steps to convert the VHDX to VHD and uploaded the VHD file into Azure storage
+
+    Reference URL:
+    https://www.starwindsoftware.com/v2v-help/VMfromMicrosoftHyperVServertoMicrosoftAzure.html
+
+15) During the conversion process, it will create a Storage account under the subscrption where you are targeting this VHD to be move
+
+16) Process will finished with an Error message displays "Error sending to Azure, operation could not be completed as a result conversion failed" ignore this alert and click on Finish
+
+17) Login to Azure, Navigate the Storage Account under container, there is a blob container created inside you will find a VHD file
+
+18) Now we need to create a Image using this blob container VHD file
+
+19) On the Azure portal, search for Images
+
+20) Create Image, provide details such as (Subscription, Resource group, name, Generation) 
+
+    Note: For Legacy Operating System (2008R2, 2012R2) make sure the Generation of the VM=1
+
+21) Click on Finish to create the Image
+
+22) Now we need to create a Azure virtual machine using the Image
+
+23) Azure portal, search Virtual Machines
+
+24) Create a Virtual machine
+
+25) provide details such as (Subscription, Resource group, VM name) 
+
+     Security type= Standard
+     Image= Click on configure VM generation, change the generation from V2 to V1
+     Click on See all images
+     Click on My Images
+     Select the Image name
+
+26) Follow the Wizard and click Finish
+
+27) Creating a Virtual machine using fixed VHD might takes some time between 30 minutes to an hour, It depend on size of the VHD
+
+Observations:
+
+- You'll see the deployment message as "Failed" just ignore it and try to RDP into it, The machine will accept the logon credential which has been setup during Hyperv setup.
+- The complete shutdown may takes time and always agent not running message appears in the machine blade  
