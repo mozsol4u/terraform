@@ -1,0 +1,10 @@
+Currently, AUM v1 follows the pattern below for patching and monitoring:
+
+For each client, there are three subscriptions: NPD, PRD, and Shared. Under the Shared subscription, the following resources are created:
+
+One Log Analytics workspace (Infra - for patching)
+Two Log Analytics workspace CC & CE (Perf - for monitoring)
+One Automation Account linked to the Infra Log Analytics workspace
+Two DCR rules, one for CC and another for CE resources, linked to the Perf Log Analytics workspace
+Alerts configured for CPU, Memory, disk, and VM availability
+Based on RFC approval, jobs are created and run manually; there are no recurring jobs.
