@@ -1,0 +1,16 @@
+Azure Monitoring 
+
+1) The existing Log Analytics workspace and user-managed identity will be used.
+2) Enable the following Azure policies.
+3) Create a Data Collection Rule (DCR) record in the SharedHub subscription.
+4) Enable Azure Monitor for Sandbox and Dev servers.
+5) Validate the Azure Monitor logs.
+6) Create alerts for Disk, Memory, CPU, and VM availability
+7) Configure the Azure Sentinel setting from Log Analytics to Azure Monitor Agent (AMA)
+
+Log Analytics (decommissioning)
+
+1) After implementing the Azure Monitor Agent (AMA) and reviewing the logs collected through Azure Monitor and Azure Sentinel
+
+Delete the Log Analytics extension deployment Azure policy.
+Uninstall the Log Analytics agent from both servers and workstations.
