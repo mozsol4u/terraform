@@ -1,0 +1,21 @@
+CPU:
+
+InsightsMetrics 
+| where Origin == "vm.azm.ms" | where Namespace == "Processor" and Name == "UtilizationPercentage" | summarize AggregatedValue = avg(Val) by bin(TimeGenerated, 5m), Computer, _ResourceId
+
+Disk:
+
+InsightsMetrics
+| where Origin == "vm.azm.ms"
+| where Namespace == "LogicalDisk" and Name == "FreeSpacePercentage"
+| extend Disk=tostring(todynamic(Tags)["vm.azm.ms/mountId"])
+| summarize AggregatedValue = avg(Val) by bin(TimeGenerated, 5m), Computer, _ResourceId, Disk
+
+
+Memory:
+
+InsightsMetrics
+| where Origin == "vm.azm.ms"
+| where Namespace == "Memory" and Name == "AvailableMB"
+| extend TotalMemory = toreal(todynamic(Tags)["vm.azm.ms/memorySizeMB"]) | extend AvailableMemoryPercentage = (toreal(Val) / TotalMemory) * 100.0
+| summarize AggregatedValue = avg(AvailableMemoryPercentage) by bin(TimeGenerated, 5m), Computer, _ResourceId
