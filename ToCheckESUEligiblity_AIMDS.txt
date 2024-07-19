@@ -1,0 +1,7 @@
+$url = "http://169.254.169.254/metadata/instance?api-version=2021-02-01"
+$headers = @{ "Metadata" = "true" }
+$response = Invoke-RestMethod -Uri $url -Headers $headers -Method GET
+$response | Format-List
+
+
+curl -H "Metadata: true" "http://169.254.169.254/metadata/instance?api-version=2021-02-01"
