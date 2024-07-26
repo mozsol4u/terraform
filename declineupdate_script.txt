@@ -1,0 +1,16 @@
+# Import WSUS Administration module
+[reflection.assembly]::LoadWithPartialName("Microsoft.UpdateServices.Administration") | Out-Null
+
+# Connect to the WSUS server
+$wsus = [Microsoft.UpdateServices.Administration.AdminProxy]::GetUpdateServer("YourWSUSServer", $False, 8530)
+
+# Get declined updates
+$declinedUpdates = $wsus.GetUpdates() | Where-Object { $_.IsDeclined -eq $true }
+
+# Loop through each declined update and delete it
+foreach ($update in $declinedUpdates) {
+    Write-Output "Deleting declined update: $($update.Title)"
+    $update.Delete()
+}
+
+Write-Output "Declined updates cleanup complete."
