@@ -1,0 +1,24 @@
+# Step1: Make (John) the database owner
+
+USE your_database_name;
+ALTER AUTHORIZATION ON DATABASE::your_database_name TO john;
+
+# Step2: Remove the old user (Smith) from the database
+
+USE your_database_name;
+EXEC sp_dropuser 'smith';
+
+#Step3: If (Smith) is also a login at the server level, you can drop the login as well (This is an optional step OS user can be delete in local users)
+
+DROP LOGIN smith;
+
+# Step4: Ensure the (John) login has necessary permissions
+USE your_database_name;
+EXEC sp_addrolemember 'db_owner', 'john';
+
+# Step5: Final Verification
+SELECT name, SUSER_SNAME(owner_sid) AS owner
+FROM sys.databases
+WHERE name = 'your_database_name';
+
+
