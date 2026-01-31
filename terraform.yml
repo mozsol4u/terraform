@@ -1,0 +1,113 @@
+name: Terraform ALZ
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# Required for GitHub → Azure OIDC token exchange and repo checkout
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  TF_IN_AUTOMATION: "true"
+  TF_INPUT: "false"
+  WORKING_DIR: ${{ github.workspace }}/root
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1) Checkout repository
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2) Authenticate to Azure with OIDC (no client secret)
+      #    Uses the management subscription as default ARM context
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+
+      # 3) Setup Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.5
+
+      # 4) Enable Terraform plugin cache and cache it across runs
+      - name: Configure Terraform plugin cache
+        run: |
+          echo 'plugin_cache_dir = "'$HOME'/.terraform.d/plugin-cache"' > ~/.terraformrc
+          mkdir -p "$HOME/.terraform.d/plugin-cache"
+
+      - name: Cache Terraform plugins
+        uses: actions/cache@v4
+        with:
+          path: |
+            $HOME/.terraform.d/plugin-cache
+          key: terraform-${{ runner.os }}-${{ hashFiles('**/.terraform.lock.hcl') }}
+          restore-keys: |
+            terraform-${{ runner.os }}-
+
+      # 5) Terraform Init (remote state uses AAD auth)
+      - name: Terraform Init
+        working-directory: ${{ env.WORKING_DIR }}
+        run: terraform init -upgrade
+
+      # 6) Terraform Fmt
+      - name: Terraform Fmt
+        working-directory: ${{ env.WORKING_DIR }}
+        run: terraform fmt -check -recursive
+
+      # 7) Terraform Validate
+      - name: Terraform Validate
+        working-directory: ${{ env.WORKING_DIR }}
+        run: terraform validate
+
+      # 8) Terraform Plan on PRs (store plan as artifact)
+      - name: Terraform Plan
+        if: github.event_name == 'pull_request'
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          terraform plan -no-color \
+            -var="tenant_id=${{ vars.AZURE_TENANT_ID }}" \
+            -var="management_subscription_id=${{ vars.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}" \
+            -var="connectivity_subscription_id=${{ vars.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}" \
+            -var="identity_subscription_id=${{ vars.AZURE_IDENTITY_SUBSCRIPTION_ID }}" \
+            -var="workloads_subscription_id=${{ vars.AZURE_WORKLOADS_SUBSCRIPTION_ID }}" \
+            -var="location=${{ vars.AZURE_LOCATION }}" \
+            -var="tfstate_rg=${{ vars.AZURE_TFSTATE_RG }}" \
+            -var="tfstate_sa=${{ vars.AZURE_TFSTATE_SA }}" \
+            -var="tfstate_container=${{ vars.AZURE_TFSTATE_CONTAINER }}" \
+            -out=tfplan
+
+      - name: Upload Plan
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan
+          path: ${{ env.WORKING_DIR }}/tfplan
+          if-no-files-found: ignore
+          retention-days: 7
+
+      # 9) Terraform Apply on push to main
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          terraform apply -auto-approve \
+            -var="tenant_id=${{ vars.AZURE_TENANT_ID }}" \
+            -var="management_subscription_id=${{ vars.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}" \
+            -var="connectivity_subscription_id=${{ vars.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}" \
+            -var="identity_subscription_id=${{ vars.AZURE_IDENTITY_SUBSCRIPTION_ID }}" \
+            -var="workloads_subscription_id=${{ vars.AZURE_WORKLOADS_SUBSCRIPTION_ID }}" \
+            -var="location=${{ vars.AZURE_LOCATION }}" \
+            -var="tfstate_rg=${{ vars.AZURE_TFSTATE_RG }}" \
+            -var="tfstate_sa=${{ vars.AZURE_TFSTATE_SA }}" \
+            -var="tfstate_container=${{ vars.AZURE_TFSTATE_CONTAINER }}"
