@@ -1,0 +1,16 @@
+Resources
+| where type =~ "microsoft.network/virtualnetworks"
+| project
+    subscriptionId,
+    resourceGroup,
+    vnetName = name,
+    location,
+    addressPrefixes = properties.addressSpace.addressPrefixes
+| mv-expand addressPrefixes
+| project
+    subscriptionId,
+    resourceGroup,
+    vnetName,
+    location,
+    addressPrefix = tostring(addressPrefixes)
+| order by subscriptionId asc, vnetName asc
