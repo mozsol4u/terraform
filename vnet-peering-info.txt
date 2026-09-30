@@ -1,0 +1,43 @@
+Resources
+| where type =~ "microsoft.network/virtualnetworks"
+| project
+    subscriptionId,
+    resourceGroup,
+    vnetName = name,
+    location,
+    addressPrefixes = properties.addressSpace.addressPrefixes,
+    peerings = properties.virtualNetworkPeerings
+| mv-expand addressPrefixes
+| project
+    subscriptionId,
+    resourceGroup,
+    vnetName,
+    location,
+    addressPrefix = tostring(addressPrefixes),
+    peerings
+| mv-expand peerings
+| project
+    subscriptionId,
+    resourceGroup,
+    vnetName,
+    location,
+    addressPrefix,
+    peeringName = tostring(peerings.name),
+    peeringState = tostring(peerings.properties.peeringState),
+    remoteVnetId = tostring(peerings.properties.remoteVirtualNetwork.id)
+| extend
+    remoteSubscriptionId = tostring(split(remoteVnetId, "/")[2]),
+    remoteResourceGroup = tostring(split(remoteVnetId, "/")[4]),
+    remoteVnetName = tostring(split(remoteVnetId, "/")[8])
+| project
+    subscriptionId,
+    resourceGroup,
+    vnetName,
+    location,
+    addressPrefix,
+    peeringName,
+    peeringState,
+    remoteSubscriptionId,
+    remoteResourceGroup,
+    remoteVnetName
+| order by subscriptionId asc, vnetName asc
