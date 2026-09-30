@@ -1,0 +1,26 @@
+Resources
+| where type =~ "microsoft.network/virtualnetworks"
+| extend
+    AddressSpace = tostring(properties.addressSpace.addressPrefixes),
+    PeeringCount = array_length(properties.virtualNetworkPeerings),
+    SubnetList = properties.subnets
+| mv-expand SubnetList
+| extend SubnetName = tostring(SubnetList.name)
+| summarize
+    Subnets = strcat_array(make_list(SubnetName), ", "),
+    AddressSpace = any(AddressSpace),
+    PeeringCount = any(PeeringCount),
+    Region = any(location),
+    resourceGroup = any(resourceGroup)
+    by subscriptionId, VNetName = name
+| extend
+    Peered = iff(PeeringCount > 0, "Yes", "No")
+| project
+    subscriptionId,
+    resourceGroup,
+    VNetName,
+    Region,
+    AddressSpace,
+    Subnets,
+    Peered
+| order by subscriptionId asc, VNetName asc
