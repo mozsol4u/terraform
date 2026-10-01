@@ -1,0 +1,46 @@
+***************
+Private DNS registration - True
+****************
+
+
+Resources
+| where type =~ "microsoft.network/privatednszones/virtualnetworklinks"
+| extend registrationEnabled = tostring(properties.registrationEnabled)
+| where registrationEnabled =~ "true"
+| extend vnetId = tostring(properties.virtualNetwork.id)
+| project
+    subscriptionId,
+    resourceGroup,
+    zoneName = tostring(split(name, "/")[0]),
+    linkName = tostring(split(name, "/")[1]),
+    vnetId,
+    registrationEnabled,
+    provisioningState = tostring(properties.provisioningState)
+| order by subscriptionId, zoneName, vnetId
+
+
+************************
+Private DNS registration - VNET Name
+************************
+
+Resources
+| where type =~ "microsoft.network/privatednszones/virtualnetworklinks"
+| where tostring(properties.registrationEnabled) =~ "true"
+| extend
+    vnetId = tostring(properties.virtualNetwork.id),
+    zoneName = tostring(split(name, "/")[0]),
+    linkName = tostring(split(name, "/")[1])
+| join kind=leftouter (
+    Resources
+    | where type =~ "microsoft.network/virtualnetworks"
+    | project vnetId = id, vnetName = name, vnetResourceGroup = resourceGroup
+) on vnetId
+| project
+    subscriptionId,
+    resourceGroup,
+    zoneName,
+    linkName,
+    vnetName,
+    vnetResourceGroup,
+    vnetId
+| order by vnetName, zoneName
