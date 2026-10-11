@@ -1,0 +1,35 @@
+Worksheets - Summary
+		
+Sr.No	Worksheet Name	Action Required
+1	Empty - Resource Groups	TBD - Clean up
+2	List - AI service accounts by kind and SKUs	TBD - Review and resize if needed
+3	List - Virtual Machines SKUs	TBD - Review and resize if needed
+4	List - Virtual Machines with Public IP Enable	TBD - Review and remove the Public IP and control it through NSGs until Firewall deployed
+5	List - Recovery Service Vaults	TBD - Review and recommend to enable immutable backups for Prod workloads
+6	List - VNet IP addressess	TBD - Review required
+7	List - NAT Gateways with their linked subnets	TBD - Review required
+8	List - Subnet behind a NAT Gateway used for which Resources	TBD - Review required
+9	List - VMs network interfaces that send outbound traffic through each NAT Gateway	TBD - Review required
+10	List - Virtual Network Gateways	TBD - Review required
+11	List - Virtual Network Gateways with Site-to-Site VPN connection detail	TBD - Review required
+12	List - Log Analytics Workspaces (Overview)	TBD - Review required
+13	List - Log Analytics Workspaces SKUs & Retention	TBD - Review required
+14	UnAssociated - Public IPs	TBD - Clean up
+15	UnAssociated- NSGs	TBD - Clean up
+16	PrivateDNS - No Link (Empty)	TBD - Clean up
+17	PrivateEndpoints - Disconnected / Reject 	TBD - Clean up
+18	PrivateEndpoint - TargetResource Not found	TBD - Clean up
+19	PrivateDNS - NO Record	TBD - Clean up
+20	Storage Accounts - Public and Anonymous acces enabled	TBD - Clean up
+21	Defender Plans - Subscriptions (Enabled)	TBD - Review & disabled if no longer needed
+22	TagNames Used - Subscriptions	TBD - Review & remove any tags which no longer needed
+23	Resources Spinup by Percentage	TBD - Review & Finanlize the Workloads
+24	Resources Spinup by Percentage + Region	TBD - Review & Finanlize the Workloads
+25	UnAttached - Disks	TBD - Clean up
+26	NSGs - Whitelisted Ips	TBD - Review IP addresses and perform housekeeping to remove those that are no longer needed
+27	NSGs - Internet allow (Inbound/Outbound)	TBD - Review the rules and perform housekeeping to remove those that are no longer needed
+28	NSGs Inbound/Outbound  Rule Allows [0.0.0.0/0] traffic	TBD - Review and Clean up
+29	NSGs Attached - List of Subnets	TBD - Review needed
+30	List - Azure Firewall	TBD - Review and Clean up if no longer needed
+31	List - Azure Firewall Policies	TBD - Review and Clean up if no longer needed
+32	List - Azure Firewall Policies attached	TBD - Review and Clean up if no longer needed
