@@ -1,0 +1,25 @@
+Summary: Rename 8 Azure Subscriptions to Align with Approved Naming Conventions
+
+Description:
+
+As part of the Azure subscription governance and standardization initiative, update the names of the 8 Azure subscriptions to align with the approved naming conventions.
+
+Scope of Work:
+
+Review the current names of all 8 Azure subscriptions.
+Validate the required subscription names against the approved naming conventions.
+Prepare a mapping of current subscription names to the proposed names.
+Rename the subscriptions in accordance with the approved naming standards.
+Verify that the updated names are reflected correctly in the Azure portal and relevant management tools.
+Update the associated documentation and subscription inventory to reflect the new names.
+
+Acceptance Criteria:
+
+All 8 Azure subscriptions are reviewed against the approved naming conventions.
+The current and proposed subscription names are documented and validated.
+All 8 subscriptions are renamed according to the approved standards.
+The updated names are verified in the Azure portal.
+Relevant documentation and inventory records are updated.
+Any exceptions or naming conflicts are documented and communicated to the appropriate stakeholders.
+
+Deliverable: All 8 Azure subscriptions renamed in accordance with the approved naming conventions, with the subscription inventory and supporting documentation updated accordingly.
