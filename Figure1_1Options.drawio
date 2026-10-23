@@ -1,0 +1,82 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.9 Chrome/134.0.6998.205 Electron/35.4.0 Safari/537.36" version="27.0.9">
+  <diagram name="Options at a glance" id="d1">
+    <mxGraphModel dx="1281" dy="626" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="620" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="hA" value="Option A" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=18;fontStyle=1;fontColor=#582873;" parent="1" vertex="1">
+          <mxGeometry x="20" y="10" width="370" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="sA" value="Commvault for multi-cloud workloads" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=12;fontStyle=0;fontColor=#404040;" parent="1" vertex="1">
+          <mxGeometry x="20" y="40" width="370" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="accA" value="Entra ID + PAM access layer" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#8C8C8C;strokeColor=none;fontColor=#FFFFFF;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="20" y="80" width="370" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="dataA" value="Commvault Cloud: Azure data protection&lt;br&gt;(same platform as on-premises + M365)" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#582873;strokeColor=none;fontColor=#FFFFFF;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="20" y="138" width="370" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="cfgA" value="Cloud Rewind: rebuild resource groups,&lt;br&gt;VNets, compute and PaaS configuration" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#582873;strokeColor=none;fontColor=#FFFFFF;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="20" y="214" width="370" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="devA" value="DevOps / GitHub: Commvault" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#582873;strokeColor=none;fontColor=#FFFFFF;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="20" y="290" width="370" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="offA" value="Offsite copy: AirGap Protect (Canada)&lt;br&gt;+ optional copy to on-premises DCs" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#AD1D84;strokeColor=none;fontColor=#FFFFFF;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="20" y="348" width="370" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="mcA" value="AWS: same platform" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#8C8C8C;strokeColor=none;fontColor=#FFFFFF;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="20" y="424" width="370" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="hB" value="Option B" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=18;fontStyle=1;fontColor=#4E95D9;" parent="1" vertex="1">
+          <mxGeometry x="415" y="10" width="370" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="sB" value="Rubrik for multi-cloud workloads" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=12;fontStyle=0;fontColor=#404040;" parent="1" vertex="1">
+          <mxGeometry x="415" y="40" width="370" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="accB" value="Entra ID + PAM access layer" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#8C8C8C;strokeColor=none;fontColor=#FFFFFF;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="415" y="80" width="370" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="dataB" value="Rubrik Security Cloud: Azure data protection&lt;br&gt;(second platform alongside Commvault)" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#4E95D9;strokeColor=none;fontColor=#FFFFFF;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="415" y="138" width="370" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="cfgB" value="IaC-based rebuild (Bicep / Terraform in Git)&lt;br&gt;+ optional configuration-capture tool" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#4E95D9;strokeColor=none;fontColor=#FFFFFF;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="415" y="214" width="370" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="devB" value="DevOps / GitHub: Rubrik" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#4E95D9;strokeColor=none;fontColor=#FFFFFF;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="415" y="290" width="370" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="offB" value="Offsite copy: Rubrik Cloud Vault&lt;br&gt;(Canadian region to confirm)" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#AD1D84;strokeColor=none;fontColor=#FFFFFF;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="415" y="348" width="370" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="mcB" value="AWS: same platform" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#8C8C8C;strokeColor=none;fontColor=#FFFFFF;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="415" y="424" width="370" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="hC" value="Option C" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=18;fontStyle=1;fontColor=#2E8B88;" parent="1" vertex="1">
+          <mxGeometry x="810" y="10" width="370" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="sC" value="Azure Backup for Azure workloads" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=12;fontStyle=0;fontColor=#404040;" parent="1" vertex="1">
+          <mxGeometry x="810" y="40" width="370" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="accC" value="Entra ID + PAM access layer" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#8C8C8C;strokeColor=none;fontColor=#FFFFFF;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="810" y="80" width="370" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="dataC" value="Azure Backup + Azure-native PITR&lt;br&gt;(already deployed and running)" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#2E8B88;strokeColor=none;fontColor=#FFFFFF;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="810" y="138" width="370" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="cfgC" value="IaC-based rebuild (Bicep / Terraform in Git)&lt;br&gt;+ optional configuration-capture tool" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#2E8B88;strokeColor=none;fontColor=#FFFFFF;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="810" y="214" width="370" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="devC" value="DevOps / GitHub: specialist backup service" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#2E8B88;strokeColor=none;fontColor=#FFFFFF;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="810" y="290" width="370" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="offC" value="Offsite copy: GRS replica in Canada East&lt;br&gt;(Resource Guard for isolation)" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#AD1D84;strokeColor=none;fontColor=#FFFFFF;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="810" y="348" width="370" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="mcC" value="AWS: native service per cloud" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#8C8C8C;strokeColor=none;fontColor=#FFFFFF;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="810" y="424" width="370" height="46" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
