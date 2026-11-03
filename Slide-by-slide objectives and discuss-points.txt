@@ -1,0 +1,55 @@
+Slide-by-slide objectives and discussion points
+
+Slide 1: Title
+
+Objective: set the frame. This is a coverage review that answers one question: can we get the business back if Azure or a privileged account fails?
+Say: the evidence comes from the KDD v0.6 and Requirements v0.1 already circulated; today consolidates it onto six slides.
+Ask: “Is that the question you want answered today, or is there another one?”
+Output: agreement on scope before the evidence starts.
+
+Slide 2: What coverage is, in one picture
+
+Objective: give everyone the same three-layer yardstick (protect, isolate, recover) before any product is discussed.
+Say: Azure Backup delivers the first layer well; the gaps are in layers two and three. A service “not covered by Azure Backup” is usually covered by its own built-in backup, by design.
+Ask: “Does the business accept that zone redundancy is not an offsite copy?” This is the premise for everything that follows.
+Output: agreement on the yardstick.
+
+Slide 3: What is protected today, and what is not
+
+Objective: show the current state as one matrix, with the three figures counted from KDD table 1.1.1 (3 of 24 covered by Azure Backup without conditions; 0 copies outside the tenant; 7 services with no customer-controlled backup).
+Say: most data is well protected in region; the repeated weaknesses are same-tenant offsite copies and short retention for PaaS and identity.
+Ask: “Does anyone know of a workload classified wrongly here?” Capture corrections; the statuses must be confirmed per subscription.
+Output: owners for the discovery that confirms the matrix.
+
+Slide 4: What stops working in an Azure outage
+
+Objective: show that backups held only in Azure fail with Azure, across three outage types.
+Say: a zone outage is handled; a region outage leaves us dependent on Canada East capacity where nothing runs; an Entra ID outage blocks every console using Entra sign-in. Requirements 4-6 (isolated copy) and 4-7 (cross-region recovery) are the two this slide tests.
+Ask: “Have we ever tested a restore into Canada East?” and “Who holds break-glass accounts that work without Entra ID?”
+Output: recognition that the region plan and break-glass access are gaps, not just the backup product.
+
+Slide 5: The services everything else depends on
+
+Objective: show that identity, code and platform configuration, which sit outside Azure Backup, are the first things recovery needs.
+Say: Microsoft gives more natively than people expect (Entra Backup and Recovery, 7 days; GitHub 90 days; Azure DevOps 28 days), but all of it is short-term and inside the service being recovered. The dependency chain: configuration is rebuilt from code, code lives in GitHub or Azure DevOps, both sign in with Entra ID.
+Ask: “Is 7-day identity recovery and no hard-delete recovery acceptable to Security?” and “Is Infrastructure as Code complete for our critical environments?”
+Output: a position from Security on identity retention; an owner to assess IaC completeness.
+
+Slide 6: How a third-party platform closes the gaps
+
+Objective: map each gap to what Commvault and Rubrik add, and be explicit about what still depends on Azure.
+Say: the recurring additions are an isolated copy, long-term retention for identity, code and PaaS, and (Commvault) automated environment rebuild. Neither removes the need for Entra ID, a reachable Azure control plane and recovery-region capacity; only a copy held outside Azure removes the storage dependency.
+Ask: “Do we want the offsite copy on-premises or on another cloud, given residency?” and “Is the Commvault control-plane location (East US 2) acceptable to Compliance?”
+Output: a residency position and a preference on where the isolated copy should live; the vendor claims go to the proof of concept.
+
+Slide 7: Getting the business back
+
+Objective: turn the findings into a recovery sequence and the preconditions that must exist before an outage.
+Say: recover in dependency order: control, identity, foundation, data, validation. The three cards cite the requirements that make each precondition mandatory (4-5, 4-6, 4-7, 7-3, 5-9, 6-1 to 6-7). The grey box lists what would make recovery fail.
+Ask: “Who owns each precondition?” and “Have the business recovery tiers (RPO/RTO) been agreed?”
+Output: named owners for the three preconditions and a date for agreeing the tiers.
+
+Closing (2 minutes)
+Ask for three commitments: discovery to confirm the matrix per subscription, Security’s position on identity and isolation, and owners for the slide 7 preconditions. Decisions on vendor and cost stay with the KDD session.
+
+If you’d prefer, I can put this walkthrough into the speaker notes of each slide or into a short Word briefing note.
