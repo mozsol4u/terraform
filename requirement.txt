@@ -1,0 +1,13 @@
+Although backups can be supported by Microsoft, they are still at risk of a hard deletion. The person asks what measures can be taken to strengthen the backups through Azure.
+
+1) Do we have maturity to access the backups?
+- In a event of Entra or Tenant compromise if someone delete all objects can we still have access to the backup data? 
+- What type of recovery is needed?
+- All the different stacks, Entra, Virtual Machines, PaaS services, GitHub. Across all major recovery scenarios where do we have backup availability
+- Regional failure will still be covered the backups? If regional is not available it might take some time to recover?
+- What failure scenarios need to be tackled? 
+- Operational is the first thing if there is any operational backup or recovery we cannot do that would be a gap? Identity what kind of operation task? Provide a Operational view
+- What possible recovery of backup we could have with the current setup? 
+- Do we need to get back to leadership for what makes sense and what doesn't for backup?
+
+2) How the third-party Enterprise Backups can full filled the gaps? 
