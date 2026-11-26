@@ -1,0 +1,45 @@
+Step 1: Make sure the Windows Time service starts automatically
+
+Set-Service w32time -StartupType Automatic
+Start-Service w32time
+
+Step 2: Turn off Azure host time sync
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\VMICTimeProvider" /v Enabled /t REG_DWORD /d 0 /f
+
+Step 3: Point AZRPRDADM01 at the NRC servers
+w32tm /config /manualpeerlist:"time.nrc.ca,0x8 time.chu.nrc.ca,0x8" /syncfromflags:manual /reliable:yes /update
+
+Step 4: Turn on the NTP server role
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\NtpServer" /v Enabled /t REG_DWORD /d 1 /f
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\W32Time\Config" /v AnnounceFlags /t REG_DWORD /d 5 /f
+
+Step 5: Open UDP port 123 in Windows Firewall
+New-NetFirewallRule -DisplayName "NTP Server (UDP 123 In)" -Direction Inbound -Protocol UDP -LocalPort 123 -Action Allow
+New-NetFirewallRule -DisplayName "NTP Client (UDP 123 Out)" -Direction Outbound -Protocol UDP -RemotePort 123 -Action Allow
+
+Step 6: Restart the service and force a sync
+Restart-Service w32time
+w32tm /resync /rediscover
+
+Step 7: Check if it's working
+w32tm /query /source          # Should show time.nrc.ca or time.chu.nrc.ca (not "VM IC Time Synchronization Provider" or "Local CMOS Clock")
+w32tm /query /status          # Shows Stratum, Last Successful Sync Time
+w32tm /query /peers           # Both NRC peers listed
+w32tm /query /configuration   # Confirm NtpServer Enabled: 1, Type: NTP, AnnounceFlags: 5
+w32tm /stripchart /computer:time.nrc.ca /samples:5 /dataonly   # Shows the time offset
+
+Step 8: From another machine on the network, confirm it can reach AZRPRDADM01 as a time server:
+w32tm /stripchart /computer:AZRPRDADM01 /samples:5 /dataonly
+
+Step 9 (optional): Point other machines at AZRPRDADM01
+w32tm /config /manualpeerlist:"AZRPRDADM01,0x8" /syncfromflags:manual /update
+Restart-Service w32time
+w32tm /resync
+
+
+
+
+
+
+
+
